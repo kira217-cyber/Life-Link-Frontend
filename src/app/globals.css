@@ -7,11 +7,13 @@
 /* ---------------------------------------------------------------------------
    LifeLink design tokens
 
-   The palette is built around a deep crimson — the one colour this domain
-   already owns — with the neutrals biased a few degrees towards it, so the
-   greys read as chosen rather than inherited. Urgency and outcome get their
-   own semantic tokens: they carry meaning a reader has to catch at a glance,
-   so they stay separate from the brand accent.
+   Warm ground, deep crimson accent. The neutrals are pulled several degrees
+   towards red so the page reads like paper rather than a dashboard chrome —
+   this is a product people reach for on a bad day, and a cold grey UI is the
+   wrong register for it.
+
+   Urgency and outcome get their own semantic tokens. A reader has to catch
+   those at a glance, so they must not shift when the brand accent does.
 --------------------------------------------------------------------------- */
 
 @theme inline {
@@ -71,132 +73,146 @@
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  /* Illustration palette — the hand-drawn art takes its ink from here so it
+     re-colours with the theme instead of being baked into each drawing. */
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.72);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-xl: calc(var(--radius) * 1.3);
+  --radius-2xl: calc(var(--radius) * 1.7);
   --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 2.8);
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.875rem;
 
-  --background: oklch(0.993 0.003 40);
-  --foreground: oklch(0.175 0.014 25);
+  --background: oklch(0.977 0.013 64);
+  --foreground: oklch(0.202 0.023 32);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.175 0.014 25);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.175 0.014 25);
+  --card: oklch(0.996 0.005 72);
+  --card-foreground: oklch(0.202 0.023 32);
+  --popover: oklch(0.996 0.005 72);
+  --popover-foreground: oklch(0.202 0.023 32);
 
-  --primary: oklch(0.502 0.183 22);
-  --primary-foreground: oklch(0.985 0.005 40);
+  --primary: oklch(0.492 0.194 25);
+  --primary-foreground: oklch(0.988 0.01 72);
 
-  --secondary: oklch(0.963 0.008 38);
-  --secondary-foreground: oklch(0.255 0.03 24);
+  --secondary: oklch(0.944 0.019 62);
+  --secondary-foreground: oklch(0.292 0.042 30);
 
-  --muted: oklch(0.966 0.006 38);
-  --muted-foreground: oklch(0.487 0.022 28);
+  --muted: oklch(0.948 0.016 62);
+  --muted-foreground: oklch(0.478 0.03 38);
 
-  --accent: oklch(0.947 0.022 30);
-  --accent-foreground: oklch(0.36 0.116 22);
+  --accent: oklch(0.926 0.036 42);
+  --accent-foreground: oklch(0.352 0.122 26);
 
-  --destructive: oklch(0.552 0.212 27);
-  --destructive-foreground: oklch(0.985 0.005 40);
+  --destructive: oklch(0.545 0.214 27);
+  --destructive-foreground: oklch(0.988 0.01 72);
 
-  --border: oklch(0.906 0.009 34);
-  --input: oklch(0.906 0.009 34);
-  --ring: oklch(0.502 0.183 22);
+  --border: oklch(0.886 0.017 58);
+  --input: oklch(0.886 0.017 58);
+  --ring: oklch(0.492 0.194 25);
 
   /* Categorical series — separated by hue, not only by lightness */
-  --chart-1: oklch(0.552 0.188 22);
-  --chart-2: oklch(0.648 0.142 56);
-  --chart-3: oklch(0.592 0.094 196);
-  --chart-4: oklch(0.512 0.124 268);
-  --chart-5: oklch(0.638 0.126 146);
+  --chart-1: oklch(0.546 0.192 25);
+  --chart-2: oklch(0.658 0.144 58);
+  --chart-3: oklch(0.596 0.096 196);
+  --chart-4: oklch(0.518 0.126 268);
+  --chart-5: oklch(0.642 0.128 146);
 
-  --urgency-normal: oklch(0.505 0.082 196);
-  --urgency-normal-soft: oklch(0.953 0.024 196);
-  --urgency-urgent: oklch(0.552 0.136 58);
-  --urgency-urgent-soft: oklch(0.958 0.038 62);
-  --urgency-critical: oklch(0.512 0.202 24);
-  --urgency-critical-soft: oklch(0.951 0.032 26);
+  --urgency-normal: oklch(0.498 0.084 196);
+  --urgency-normal-soft: oklch(0.942 0.028 196);
+  --urgency-urgent: oklch(0.548 0.138 58);
+  --urgency-urgent-soft: oklch(0.948 0.044 62);
+  --urgency-critical: oklch(0.505 0.206 24);
+  --urgency-critical-soft: oklch(0.942 0.038 26);
 
-  --success: oklch(0.505 0.118 148);
-  --success-soft: oklch(0.952 0.032 150);
-  --warning: oklch(0.548 0.124 72);
-  --warning-soft: oklch(0.958 0.042 76);
-  --info: oklch(0.498 0.118 252);
-  --info-soft: oklch(0.952 0.028 254);
+  --success: oklch(0.498 0.12 148);
+  --success-soft: oklch(0.942 0.036 150);
+  --warning: oklch(0.542 0.126 72);
+  --warning-soft: oklch(0.948 0.048 76);
+  --info: oklch(0.492 0.12 252);
+  --info-soft: oklch(0.942 0.032 254);
 
-  --sidebar: oklch(0.982 0.005 38);
-  --sidebar-foreground: oklch(0.205 0.016 25);
-  --sidebar-primary: oklch(0.502 0.183 22);
-  --sidebar-primary-foreground: oklch(0.985 0.005 40);
-  --sidebar-accent: oklch(0.951 0.014 34);
-  --sidebar-accent-foreground: oklch(0.322 0.078 23);
-  --sidebar-border: oklch(0.902 0.01 34);
-  --sidebar-ring: oklch(0.502 0.183 22);
+  --ink: oklch(0.312 0.056 30);
+  --ink-soft: oklch(0.658 0.048 44);
+  --paper: oklch(0.996 0.005 72);
+
+  --sidebar: oklch(0.962 0.017 62);
+  --sidebar-foreground: oklch(0.232 0.026 32);
+  --sidebar-primary: oklch(0.492 0.194 25);
+  --sidebar-primary-foreground: oklch(0.988 0.01 72);
+  --sidebar-accent: oklch(0.926 0.032 46);
+  --sidebar-accent-foreground: oklch(0.322 0.086 26);
+  --sidebar-border: oklch(0.882 0.019 58);
+  --sidebar-ring: oklch(0.492 0.194 25);
 }
 
 .dark {
-  --background: oklch(0.162 0.012 25);
-  --foreground: oklch(0.958 0.006 40);
+  --background: oklch(0.178 0.017 32);
+  --foreground: oklch(0.955 0.012 68);
 
-  --card: oklch(0.208 0.014 25);
-  --card-foreground: oklch(0.958 0.006 40);
-  --popover: oklch(0.208 0.014 25);
-  --popover-foreground: oklch(0.958 0.006 40);
+  --card: oklch(0.224 0.019 32);
+  --card-foreground: oklch(0.955 0.012 68);
+  --popover: oklch(0.224 0.019 32);
+  --popover-foreground: oklch(0.955 0.012 68);
 
-  --primary: oklch(0.684 0.168 21);
-  --primary-foreground: oklch(0.162 0.012 25);
+  --primary: oklch(0.678 0.174 24);
+  --primary-foreground: oklch(0.178 0.017 32);
 
-  --secondary: oklch(0.272 0.016 25);
-  --secondary-foreground: oklch(0.945 0.008 38);
+  --secondary: oklch(0.288 0.022 32);
+  --secondary-foreground: oklch(0.942 0.014 66);
 
-  --muted: oklch(0.272 0.016 25);
-  --muted-foreground: oklch(0.722 0.016 34);
+  --muted: oklch(0.288 0.022 32);
+  --muted-foreground: oklch(0.735 0.022 48);
 
-  --accent: oklch(0.302 0.032 24);
-  --accent-foreground: oklch(0.928 0.024 34);
+  --accent: oklch(0.322 0.042 30);
+  --accent-foreground: oklch(0.928 0.032 46);
 
-  --destructive: oklch(0.682 0.178 25);
-  --destructive-foreground: oklch(0.162 0.012 25);
+  --destructive: oklch(0.678 0.182 26);
+  --destructive-foreground: oklch(0.178 0.017 32);
 
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.684 0.168 21);
+  --border: oklch(1 0 0 / 13%);
+  --input: oklch(1 0 0 / 17%);
+  --ring: oklch(0.678 0.174 24);
 
-  --chart-1: oklch(0.688 0.168 21);
-  --chart-2: oklch(0.762 0.132 62);
-  --chart-3: oklch(0.712 0.092 198);
-  --chart-4: oklch(0.658 0.122 272);
-  --chart-5: oklch(0.742 0.118 148);
+  --chart-1: oklch(0.688 0.172 24);
+  --chart-2: oklch(0.772 0.134 64);
+  --chart-3: oklch(0.716 0.094 198);
+  --chart-4: oklch(0.664 0.124 272);
+  --chart-5: oklch(0.748 0.12 148);
 
-  --urgency-normal: oklch(0.728 0.084 198);
-  --urgency-normal-soft: oklch(0.288 0.038 198);
-  --urgency-urgent: oklch(0.762 0.126 64);
-  --urgency-urgent-soft: oklch(0.302 0.052 64);
-  --urgency-critical: oklch(0.706 0.176 24);
-  --urgency-critical-soft: oklch(0.302 0.062 24);
+  --urgency-normal: oklch(0.732 0.086 198);
+  --urgency-normal-soft: oklch(0.298 0.04 198);
+  --urgency-urgent: oklch(0.768 0.128 64);
+  --urgency-urgent-soft: oklch(0.312 0.054 64);
+  --urgency-critical: oklch(0.712 0.178 24);
+  --urgency-critical-soft: oklch(0.315 0.064 24);
 
-  --success: oklch(0.722 0.122 150);
-  --success-soft: oklch(0.286 0.044 150);
-  --warning: oklch(0.758 0.122 76);
-  --warning-soft: oklch(0.298 0.05 76);
-  --info: oklch(0.702 0.112 254);
-  --info-soft: oklch(0.288 0.044 254);
+  --success: oklch(0.726 0.124 150);
+  --success-soft: oklch(0.296 0.046 150);
+  --warning: oklch(0.762 0.124 76);
+  --warning-soft: oklch(0.308 0.052 76);
+  --info: oklch(0.706 0.114 254);
+  --info-soft: oklch(0.298 0.046 254);
 
-  --sidebar: oklch(0.192 0.014 25);
-  --sidebar-foreground: oklch(0.945 0.008 38);
-  --sidebar-primary: oklch(0.684 0.168 21);
-  --sidebar-primary-foreground: oklch(0.162 0.012 25);
-  --sidebar-accent: oklch(0.272 0.02 25);
-  --sidebar-accent-foreground: oklch(0.938 0.012 34);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.684 0.168 21);
+  --ink: oklch(0.912 0.024 56);
+  --ink-soft: oklch(0.552 0.038 44);
+  --paper: oklch(0.224 0.019 32);
+
+  --sidebar: oklch(0.208 0.019 32);
+  --sidebar-foreground: oklch(0.942 0.014 66);
+  --sidebar-primary: oklch(0.678 0.174 24);
+  --sidebar-primary-foreground: oklch(0.178 0.017 32);
+  --sidebar-accent: oklch(0.298 0.03 32);
+  --sidebar-accent-foreground: oklch(0.936 0.02 46);
+  --sidebar-border: oklch(1 0 0 / 11%);
+  --sidebar-ring: oklch(0.678 0.174 24);
 }
 
 @layer base {
@@ -228,6 +244,18 @@
   td {
     font-variant-numeric: tabular-nums;
   }
+
+  /* Anything that scrolls or animates should respect the viewer's setting. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer utilities {
@@ -236,5 +264,21 @@
   .scroll-x {
     @apply overflow-x-auto;
     scrollbar-width: thin;
+  }
+
+  /* A faint paper grain sitting under the warm sections. Drawn rather than
+     loaded, so it costs no request. */
+  .grain {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      color-mix(in oklch, var(--ink) 9%, transparent) 1px,
+      transparent 0
+    );
+    background-size: 22px 22px;
+  }
+
+  /* Minimum comfortable hit target on touch screens. */
+  .tap-target {
+    @apply min-h-11 min-w-11;
   }
 }
