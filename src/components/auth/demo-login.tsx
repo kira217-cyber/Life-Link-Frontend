@@ -1,13 +1,12 @@
 "use client";
 
 import { ShieldCheck, Stethoscope, User } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 
-import { demoLoginAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { InlineLoader } from "@/components/ui/loader";
+import { useBlockingAction } from "@/hooks/use-blocking-action";
+import { demoLoginAction } from "@/lib/auth/actions";
 import type { Role } from "@/types/api";
 
 /**
@@ -44,22 +43,14 @@ const ACCOUNTS: Array<{
 ];
 
 export function DemoLogin() {
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const { run, pending } = useBlockingAction();
   const [active, setActive] = useState<Role | null>(null);
 
-  function signIn(role: Role) {
-    setActive(role);
-    startTransition(async () => {
-      const result = await demoLoginAction(role);
-      if (!result.ok) {
-        setActive(null);
-        toast.error(result.message);
-        return;
-      }
-      toast.success(`Signed in as the ${role.toLowerCase()} demo account`);
-      router.push(result.redirectTo);
-      router.refresh();
+  function signIn(account: (typeof ACCOUNTS)[number]) {
+    setActive(account.role);
+    run(() => demoLoginAction(account.role), {
+      title: `Signing in as ${account.label}`,
+      description: "Setting up the demo account and opening its dashboard.",
     });
   }
 
@@ -88,7 +79,7 @@ export function DemoLogin() {
               key={account.role}
               type="button"
               variant="outline"
-              onClick={() => signIn(account.role)}
+              onClick={() => signIn(account)}
               disabled={pending}
               aria-busy={busy}
               className="tap-target h-auto w-full justify-start gap-3 bg-card px-4 py-3 text-left"

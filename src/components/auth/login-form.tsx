@@ -2,22 +2,21 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { InlineLoader } from "@/components/ui/loader";
 import { Input } from "@/components/ui/input";
+import { InlineLoader } from "@/components/ui/loader";
 import { Label } from "@/components/ui/label";
+import { useBlockingAction } from "@/hooks/use-blocking-action";
 import { loginAction } from "@/lib/auth/actions";
 import { loginSchema, type LoginValues } from "@/lib/validation/auth";
 
 export function LoginForm() {
-  const router = useRouter();
   const params = useSearchParams();
-  const [pending, startTransition] = useTransition();
+  const { run, pending } = useBlockingAction();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -31,21 +30,16 @@ export function LoginForm() {
   });
 
   function onSubmit(values: LoginValues) {
-    startTransition(async () => {
-      const result = await loginAction(values, params.get("next"));
-
-      if (!result.ok) {
-        // Field errors from the API land next to the field they belong to;
-        // anything else becomes a toast.
-        for (const [path, message] of Object.entries(result.fieldErrors ?? {})) {
+    run(() => loginAction(values, params.get("next")), {
+      title: "Signing you in",
+      description: "Checking your details and opening your dashboard.",
+      onFieldErrors: (fieldErrors) => {
+        // Errors the API raised against a field belong beside that field;
+        // the rest surfaces as the toast the hook already shows.
+        for (const [path, message] of Object.entries(fieldErrors)) {
           if (path === "email" || path === "password") setError(path, { message });
         }
-        toast.error(result.message);
-        return;
-      }
-
-      router.push(result.redirectTo);
-      router.refresh();
+      },
     });
   }
 

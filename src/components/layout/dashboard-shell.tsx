@@ -21,6 +21,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { logoutAction } from "@/lib/auth/actions";
 import { ROLE_LABEL } from "@/lib/domain";
 import { initials } from "@/lib/format";
+import { useUiStore } from "@/stores/ui-store";
 import type { SessionUser } from "@/types/api";
 
 /**
@@ -39,6 +40,7 @@ export function DashboardShell({
 }) {
   const [open, setOpen] = useState(false);
   const [signingOut, startSignOut] = useTransition();
+  const startBlocking = useUiStore((state) => state.startBlocking);
 
   const accountMenu = (
     <DropdownMenu>
@@ -74,6 +76,13 @@ export function DashboardShell({
           disabled={signingOut}
           onSelect={(event) => {
             event.preventDefault();
+            // Signing out revokes every session upstream and then redirects,
+            // so the page is about to be replaced — the overlay covers the gap
+            // the dropdown closing would otherwise leave blank.
+            startBlocking({
+              title: "Signing you out",
+              description: "Ending your session on every device.",
+            });
             startSignOut(async () => {
               await logoutAction();
             });

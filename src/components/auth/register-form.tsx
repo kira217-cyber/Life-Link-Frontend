@@ -2,15 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Eye, EyeOff, Stethoscope, User } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { InlineLoader } from "@/components/ui/loader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useBlockingAction } from "@/hooks/use-blocking-action";
 import { registerAction } from "@/lib/auth/actions";
 import { cn } from "@/lib/utils";
 import { registerSchema, type RegisterValues } from "@/lib/validation/auth";
@@ -40,8 +39,7 @@ const PASSWORD_RULES = [
 ];
 
 export function RegisterForm() {
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const { run, pending } = useBlockingAction();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -68,20 +66,15 @@ export function RegisterForm() {
   const password = useWatch({ control, name: "password" });
 
   function onSubmit(values: RegisterValues) {
-    startTransition(async () => {
-      const result = await registerAction(values);
-
-      if (!result.ok) {
-        for (const [path, message] of Object.entries(result.fieldErrors ?? {})) {
+    run(() => registerAction(values), {
+      title: "Creating your account",
+      description: "Setting things up and opening your dashboard.",
+      successMessage: "Account created. Welcome to LifeLink.",
+      onFieldErrors: (fieldErrors) => {
+        for (const [path, message] of Object.entries(fieldErrors)) {
           if (path in values) setError(path as keyof RegisterValues, { message });
         }
-        toast.error(result.message);
-        return;
-      }
-
-      toast.success("Account created. Welcome to LifeLink.");
-      router.push(result.redirectTo);
-      router.refresh();
+      },
     });
   }
 
