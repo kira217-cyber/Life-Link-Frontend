@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Geist_Mono, Instrument_Sans } from "next/font/google";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           disableTransitionOnChange
         >
           {children}
+          <LoadingOverlay />
           <Toaster position="top-right" richColors closeButton />
         </ThemeProvider>
       </body>
