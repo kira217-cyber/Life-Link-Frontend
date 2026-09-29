@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { LayoutDashboard, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -9,7 +9,9 @@ import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { ROLE_HOME, ROLE_LABEL } from "@/lib/domain";
 import { cn } from "@/lib/utils";
+import type { SessionUser } from "@/types/api";
 
 const NAV = [
   { href: "/requests", label: "Open requests" },
@@ -19,11 +21,30 @@ const NAV = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function SiteHeader() {
+export function SiteHeader({ user }: { user: SessionUser | null }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+  const signedInActions = user ? (
+    <Button asChild size="sm" className="gap-2">
+      <Link href={ROLE_HOME[user.role]}>
+        <LayoutDashboard className="size-4" />
+        <span className="hidden sm:inline">{ROLE_LABEL[user.role]} dashboard</span>
+        <span className="sm:hidden">Dashboard</span>
+      </Link>
+    </Button>
+  ) : (
+    <div className="hidden items-center gap-2 sm:flex">
+      <Button asChild variant="ghost" size="sm">
+        <Link href="/login">Sign in</Link>
+      </Button>
+      <Button asChild size="sm">
+        <Link href="/register">Join LifeLink</Link>
+      </Button>
+    </div>
+  );
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
@@ -36,7 +57,7 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-md px-3 py-2 text-sm transition-colors",
+                "rounded-lg px-3 py-2 text-sm transition-colors",
                 isActive(item.href)
                   ? "bg-accent font-medium text-accent-foreground"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -49,15 +70,7 @@ export function SiteHeader() {
 
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
-
-          <div className="hidden items-center gap-2 sm:flex">
-            <Button asChild variant="ghost" size="sm">
-              <Link href="/login">Sign in</Link>
-            </Button>
-            <Button asChild size="sm">
-              <Link href="/register">Join LifeLink</Link>
-            </Button>
-          </div>
+          {signedInActions}
 
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
@@ -78,7 +91,7 @@ export function SiteHeader() {
                       href={item.href}
                       onClick={() => setOpen(false)}
                       className={cn(
-                        "rounded-md px-3 py-2.5 text-sm",
+                        "rounded-lg px-3 py-2.5 text-sm",
                         isActive(item.href)
                           ? "bg-accent font-medium text-accent-foreground"
                           : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -89,16 +102,26 @@ export function SiteHeader() {
                   ))}
                 </nav>
                 <div className="mt-auto flex flex-col gap-2 border-t p-4">
-                  <Button asChild variant="outline">
-                    <Link href="/login" onClick={() => setOpen(false)}>
-                      Sign in
-                    </Link>
-                  </Button>
-                  <Button asChild>
-                    <Link href="/register" onClick={() => setOpen(false)}>
-                      Join LifeLink
-                    </Link>
-                  </Button>
+                  {user ? (
+                    <Button asChild className="tap-target">
+                      <Link href={ROLE_HOME[user.role]} onClick={() => setOpen(false)}>
+                        Go to my dashboard
+                      </Link>
+                    </Button>
+                  ) : (
+                    <>
+                      <Button asChild variant="outline" className="tap-target">
+                        <Link href="/login" onClick={() => setOpen(false)}>
+                          Sign in
+                        </Link>
+                      </Button>
+                      <Button asChild className="tap-target">
+                        <Link href="/register" onClick={() => setOpen(false)}>
+                          Join LifeLink
+                        </Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>
