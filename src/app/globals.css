@@ -224,6 +224,34 @@
     @apply bg-background text-foreground;
   }
 
+  /*
+   * Tailwind's preflight resets buttons to `cursor: default`, which leaves
+   * every control on the site feeling inert. Anything that responds to a click
+   * says so under the pointer; anything disabled says that instead.
+   */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="menuitem"],
+  [role="option"],
+  [role="tab"],
+  summary,
+  label:has(input[type="checkbox"]),
+  label:has(input[type="radio"]),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="range"]:not(:disabled),
+  input[type="file"]:not(:disabled),
+  select:not(:disabled),
+  a[href] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"],
+  [data-disabled] {
+    cursor: not-allowed;
+  }
+
   html {
     @apply font-sans;
     -webkit-font-smoothing: antialiased;
@@ -281,4 +309,30 @@
   .tap-target {
     @apply min-h-11 min-w-11;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   The loader's fill.
+
+   The rect starts below the drop and rises past the top, so the clip path
+   shows a level climbing rather than a shape growing. The reduced-motion rule
+   in the base layer stops it, leaving the drop filled — which still reads as
+   "working" rather than as a broken graphic.
+--------------------------------------------------------------------------- */
+
+@keyframes ll-drop-fill {
+  0% {
+    transform: translateY(100%);
+  }
+  55% {
+    transform: translateY(8%);
+  }
+  100% {
+    transform: translateY(-4%);
+  }
+}
+
+.ll-drop-fill {
+  transform-origin: center;
+  animation: ll-drop-fill 1.6s cubic-bezier(0.45, 0, 0.35, 1) infinite alternate;
 }
