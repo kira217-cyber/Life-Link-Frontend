@@ -1,13 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { InlineLoader } from "@/components/ui/loader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginAction } from "@/lib/auth/actions";
@@ -100,7 +101,7 @@ export function LoginForm() {
       <Button type="submit" size="lg" disabled={pending} className="tap-target mt-2 w-full">
         {pending ? (
           <>
-            <Loader2 className="size-4 animate-spin" />
+            <InlineLoader label="Signing in" />
             Signing in…
           </>
         ) : (

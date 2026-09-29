@@ -1,12 +1,13 @@
 "use client";
 
-import { Loader2, ShieldCheck, Stethoscope, User } from "lucide-react";
+import { ShieldCheck, Stethoscope, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { demoLoginAction } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
+import { InlineLoader } from "@/components/ui/loader";
 import type { Role } from "@/types/api";
 
 /**
@@ -94,7 +95,7 @@ export function DemoLogin() {
             >
               <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-accent-foreground">
                 {busy ? (
-                  <Loader2 className="size-4 animate-spin" />
+                  <InlineLoader label={`Signing in as ${account.label}`} />
                 ) : (
                   <account.icon className="size-4" />
                 )}

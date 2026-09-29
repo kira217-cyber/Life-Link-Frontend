@@ -1,13 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, Eye, EyeOff, Loader2, Stethoscope, User } from "lucide-react";
+import { Check, Eye, EyeOff, Stethoscope, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { InlineLoader } from "@/components/ui/loader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { registerAction } from "@/lib/auth/actions";
@@ -244,7 +245,7 @@ export function RegisterForm() {
       <Button type="submit" size="lg" disabled={pending} className="tap-target mt-1 w-full">
         {pending ? (
           <>
-            <Loader2 className="size-4 animate-spin" />
+            <InlineLoader label="Creating your account" />
             Creating your account…
           </>
         ) : (
