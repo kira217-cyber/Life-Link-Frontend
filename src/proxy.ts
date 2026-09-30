@@ -26,15 +26,26 @@ const ROLE_HOME: Record<Role, string> = {
   ADMIN: "/admin",
 };
 
-/** Prefixes only one role may enter. */
-const ROLE_AREAS: Array<{ prefix: string; role: Role }> = [
-  { prefix: "/donor", role: "DONOR" },
-  { prefix: "/requester", role: "REQUESTER" },
-  { prefix: "/admin", role: "ADMIN" },
+/**
+ * Prefixes restricted to a set of roles.
+ *
+ * The check has to happen here rather than in the page. Once a layout's shell
+ * has been streamed, a `redirect()` inside the page can no longer change the
+ * response status — it degrades to a client-side navigation, and the HTML that
+ * already went out contains the page a visitor was not meant to see. Deciding
+ * before anything renders is the only way to get a real 307.
+ */
+const ROLE_AREAS: Array<{ prefix: string; roles: Role[] }> = [
+  { prefix: "/donor", roles: ["DONOR"] },
+  { prefix: "/requester", roles: ["REQUESTER"] },
+  { prefix: "/admin", roles: ["ADMIN"] },
+  // The API opens the donor pool to these two only; a donor browsing other
+  // donors has no use for it and it would widen the exposure of their details.
+  { prefix: "/donors", roles: ["REQUESTER", "ADMIN"] },
 ];
 
 /** Signed in, any role. */
-const SHARED_PROTECTED = ["/requests", "/notifications", "/profile", "/donate", "/donors"];
+const SHARED_PROTECTED = ["/requests", "/notifications", "/profile", "/donate"];
 
 /** Pointless to visit once signed in. */
 const AUTH_ROUTES = ["/login", "/register"];
@@ -77,7 +88,7 @@ export function proxy(request: NextRequest) {
 
   // Signed in, wrong door: send them to their own dashboard rather than
   // showing a 403 page for a route they were never meant to see.
-  if (area && user.role !== area.role) {
+  if (area && !area.roles.includes(user.role)) {
     const home = new URL(ROLE_HOME[user.role], request.url);
     home.searchParams.set("denied", area.prefix.replace("/", ""));
     return NextResponse.redirect(home);
