@@ -35,16 +35,23 @@ async function withAuth<T>(
   }
 }
 
+/**
+ * Next refuses `cache` and `revalidate` together, so the default is only
+ * applied when the caller has not asked for revalidation or tagging instead.
+ */
+function withCacheDefault(options: Omit<RequestOptions, "token">): Omit<RequestOptions, "token"> {
+  const opted = options.cache !== undefined || options.revalidate !== undefined || options.tags;
+  return opted ? options : { ...options, cache: "no-store" };
+}
+
 export function serverFetch<T>(path: string, options: Omit<RequestOptions, "token"> = {}) {
-  return withAuth<T>((token) =>
-    apiFetch<T>(path, { ...options, token, cache: options.cache ?? "no-store" }),
-  );
+  const resolved = withCacheDefault(options);
+  return withAuth<T>((token) => apiFetch<T>(path, { ...resolved, token }));
 }
 
 export function serverFetchPaged<T>(path: string, options: Omit<RequestOptions, "token"> = {}) {
-  return withAuth<Paged<T>>((token) =>
-    apiFetchPaged<T>(path, { ...options, token, cache: options.cache ?? "no-store" }),
-  );
+  const resolved = withCacheDefault(options);
+  return withAuth<Paged<T>>((token) => apiFetchPaged<T>(path, { ...resolved, token }));
 }
 
 /**
