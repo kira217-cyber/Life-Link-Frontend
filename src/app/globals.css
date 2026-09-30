@@ -120,9 +120,9 @@
 
   /* Categorical series — separated by hue, not only by lightness */
   --chart-1: oklch(0.546 0.192 25);
-  --chart-2: oklch(0.658 0.144 58);
-  --chart-3: oklch(0.596 0.096 196);
-  --chart-4: oklch(0.518 0.126 268);
+  --chart-2: oklch(0.580 0.140 200);
+  --chart-3: oklch(0.658 0.144 58);
+  --chart-4: oklch(0.510 0.150 272);
   --chart-5: oklch(0.642 0.128 146);
 
   --urgency-normal: oklch(0.498 0.084 196);
@@ -181,11 +181,11 @@
   --input: oklch(1 0 0 / 17%);
   --ring: oklch(0.678 0.174 24);
 
-  --chart-1: oklch(0.688 0.172 24);
-  --chart-2: oklch(0.772 0.134 64);
-  --chart-3: oklch(0.716 0.094 198);
-  --chart-4: oklch(0.664 0.124 272);
-  --chart-5: oklch(0.748 0.12 148);
+  --chart-1: oklch(0.620 0.185 22);
+  --chart-2: oklch(0.645 0.125 198);
+  --chart-3: oklch(0.665 0.150 78);
+  --chart-4: oklch(0.585 0.160 274);
+  --chart-5: oklch(0.655 0.140 150);
 
   --urgency-normal: oklch(0.732 0.086 198);
   --urgency-normal-soft: oklch(0.298 0.04 198);
