@@ -41,6 +41,7 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
       title: "Donating",
       items: [
         { href: "/donor", label: "Invitations", icon: HeartHandshake },
+        { href: "/requests", label: "Open requests", icon: Droplets },
         { href: "/donor/donations", label: "My donations", icon: Droplets },
       ],
     },
@@ -58,6 +59,7 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
       title: "Requests",
       items: [
         { href: "/requester", label: "My requests", icon: ClipboardList },
+        { href: "/requests", label: "All open requests", icon: Droplets },
         { href: "/donors", label: "Find donors", icon: Search },
       ],
     },
@@ -78,6 +80,7 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
       title: "Moderation",
       items: [
         { href: "/admin/requests", label: "Blood requests", icon: ClipboardList },
+        { href: "/requests", label: "Open requests", icon: Droplets },
         { href: "/admin/users", label: "Users", icon: Users },
         { href: "/donors", label: "Donor directory", icon: Search },
       ],

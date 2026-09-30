@@ -34,7 +34,7 @@ const ROLE_AREAS: Array<{ prefix: string; role: Role }> = [
 ];
 
 /** Signed in, any role. */
-const SHARED_PROTECTED = ["/notifications", "/profile", "/donate", "/donors"];
+const SHARED_PROTECTED = ["/requests", "/notifications", "/profile", "/donate", "/donors"];
 
 /** Pointless to visit once signed in. */
 const AUTH_ROUTES = ["/login", "/register"];

@@ -14,7 +14,6 @@ import { cn } from "@/lib/utils";
 import type { SessionUser } from "@/types/api";
 
 const NAV = [
-  { href: "/requests", label: "Open requests" },
   { href: "/how-it-works", label: "How it works" },
   { href: "/eligibility", label: "Can I donate?" },
   { href: "/about", label: "About" },

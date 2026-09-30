@@ -97,7 +97,7 @@ export default function HomePage() {
                 variant="outline"
                 className="tap-target w-full bg-card sm:w-auto"
               >
-                <Link href="/requests">Browse open requests</Link>
+                <Link href="/how-it-works">See how it works</Link>
               </Button>
             </div>
 

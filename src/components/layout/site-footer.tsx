@@ -6,7 +6,6 @@ const COLUMNS = [
   {
     title: "Platform",
     links: [
-      { href: "/requests", label: "Open requests" },
       { href: "/how-it-works", label: "How it works" },
       { href: "/eligibility", label: "Donor eligibility" },
       { href: "/donate", label: "Support the fund" },
