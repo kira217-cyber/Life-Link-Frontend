@@ -66,3 +66,14 @@ export function maskPhone(phone: string | null | undefined): string {
 export function pluralise(count: number, singular: string, plural = `${singular}s`): string {
   return `${count} ${count === 1 ? singular : plural}`;
 }
+
+/**
+ * Whether a deadline has already gone by.
+ *
+ * Lives here rather than inline in a component: reading the clock during
+ * render makes the render impure, and the compiler is right to object.
+ */
+export function isPastDue(value: string | Date | null | undefined): boolean {
+  const date = toDate(value);
+  return date !== null && date.getTime() < Date.now();
+}
