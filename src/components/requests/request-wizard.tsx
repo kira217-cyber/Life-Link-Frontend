@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { browserFetch } from "@/lib/api/browser";
-import { errorMessage } from "@/lib/api/errors";
+import { errorMessage, fieldErrorsOf } from "@/lib/api/errors";
 import { BLOOD_GROUPS, BLOOD_GROUP_LABEL, COMPATIBLE_DONORS, URGENCY_OPTIONS } from "@/lib/domain";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -105,10 +105,7 @@ export function RequestWizard() {
     } catch (error) {
       // Field errors from the API belong beside their input — and may be on a
       // step that is no longer visible, so jump back to it.
-      const fieldErrors =
-        error && typeof error === "object" && "fieldErrors" in error
-          ? (error as { fieldErrors: Array<{ path: string; message: string }> }).fieldErrors
-          : [];
+      const fieldErrors = fieldErrorsOf(error);
 
       // Typed wide on purpose: REQUEST_STEPS is `as const`, so its length is
       // the literal 3 and the assignment below would not fit.

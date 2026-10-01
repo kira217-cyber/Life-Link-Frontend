@@ -60,6 +60,16 @@ export class NetworkError extends Error {
   }
 }
 
+/**
+ * Field errors from whatever was thrown, empty when there are none.
+ *
+ * Every form needs this and only `ApiError` carries it, so the narrowing
+ * lives here rather than being re-typed at each call site.
+ */
+export function fieldErrorsOf(error: unknown): ApiFieldError[] {
+  return error instanceof ApiError ? error.fieldErrors : [];
+}
+
 /** A message safe to show a user, whatever was thrown. */
 export function errorMessage(error: unknown): string {
   if (error instanceof ApiError || error instanceof NetworkError) return error.message;
