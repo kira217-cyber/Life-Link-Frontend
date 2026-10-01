@@ -87,3 +87,19 @@ export async function browserFetchPaged<T>(
   const success = payload as Extract<ApiResponse<T[]>, { success: true }>;
   return { items: success.data ?? [], meta: success.meta ?? null };
 }
+
+/**
+ * Both the payload and the pagination meta.
+ *
+ * Most listings answer with a bare array, which `browserFetchPaged` unwraps.
+ * A few — `/admin/payments` is the one — wrap their rows so they can carry
+ * totals alongside, and those still need the meta to drive the pager.
+ */
+export async function browserFetchWithMeta<T>(
+  path: string,
+  options: BrowserRequest = {},
+): Promise<{ data: T; meta: PaginationMeta | null }> {
+  const payload = await call<T>(path, options);
+  const success = payload as Extract<ApiResponse<T>, { success: true }>;
+  return { data: success.data, meta: success.meta ?? null };
+}

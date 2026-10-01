@@ -285,7 +285,11 @@ export interface AuditLog {
   entityType: string;
   entityId: string | null;
   ipAddress: string | null;
-  userAgent: string | null;
+  /** Both are whatever the module chose to record, so neither has a fixed shape. */
+  oldData: Record<string, unknown> | null;
+  newData: Record<string, unknown> | null;
+  /** Stored, but the admin listing does not select it. */
+  userAgent?: string | null;
   createdAt: string;
   actor?: Pick<PublicUser, "id" | "name" | "email" | "role"> | null;
 }
@@ -332,4 +336,31 @@ export interface SessionUser {
   email: string;
   role: Role;
   avatarUrl: string | null;
+}
+
+/** A row in the admin user listing — the API never selects the password hash. */
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  phone: string | null;
+  provider: AuthProvider;
+  isActive: boolean;
+  emailVerified: boolean;
+  deletedAt: string | null;
+  createdAt: string;
+  donorProfile: {
+    bloodGroup: BloodGroup;
+    district: string;
+    city: string;
+    isAvailable: boolean;
+  } | null;
+  _count: { bloodRequests: number; donations: number; payments: number };
+}
+
+/** `/admin/payments` wraps its rows so it can carry the paid totals alongside. */
+export interface AdminPaymentsPayload {
+  payments: Payment[];
+  totals: { paidCount: number; paidAmount: number };
 }

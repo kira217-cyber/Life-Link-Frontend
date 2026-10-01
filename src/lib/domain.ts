@@ -1,6 +1,7 @@
 import type {
   BloodGroup,
   MatchStatus,
+  PaymentPurpose,
   PaymentStatus,
   RequestStatus,
   Role,
@@ -175,6 +176,69 @@ export const PAYMENT_STATUS_CLASS: Record<PaymentStatus, string> = {
   FAILED: "bg-urgency-critical-soft text-urgency-critical",
   CANCELLED: "bg-muted text-muted-foreground",
   REFUNDED: "bg-info-soft text-info",
+};
+
+export const PAYMENT_STATUSES = Object.keys(PAYMENT_STATUS_LABEL) as PaymentStatus[];
+
+export const PAYMENT_PURPOSE_LABEL: Record<PaymentPurpose, string> = {
+  PLATFORM_DONATION: "Keep LifeLink running",
+  EMERGENCY_FUND: "Emergency assistance fund",
+};
+
+export const PAYMENT_PURPOSES = Object.keys(PAYMENT_PURPOSE_LABEL) as PaymentPurpose[];
+
+// ------------------------------------------------------------- audit trail
+
+/**
+ * Every action the backend writes to the audit log, grouped so the admin
+ * filter reads as a list of things that happened rather than a list of enum
+ * members. Anything the backend adds later still renders — the table falls
+ * back to the raw name rather than hiding the row.
+ */
+export const AUDIT_ACTION_LABEL: Record<string, string> = {
+  USER_REGISTERED: "User registered",
+  USER_LOGGED_IN: "User signed in",
+  USER_LOGGED_OUT: "User signed out",
+  USER_UPDATED: "Account updated",
+  USER_SOFT_DELETED: "Account deleted",
+  USER_STATUS_CHANGED: "Account status changed",
+  DONOR_PROFILE_UPSERTED: "Donor profile saved",
+  DONOR_AVAILABILITY_CHANGED: "Donor availability changed",
+  REQUEST_CREATED: "Request created",
+  REQUEST_UPDATED: "Request updated",
+  REQUEST_DELETED: "Request deleted",
+  REQUEST_VERIFIED: "Request verified",
+  REQUEST_REJECTED: "Request rejected",
+  REQUEST_CANCELLED: "Request cancelled",
+  REQUEST_FULFILLED: "Request fulfilled",
+  MATCHES_GENERATED: "Donors invited",
+  MATCH_ACCEPTED: "Invitation accepted",
+  MATCH_DECLINED: "Invitation declined",
+  MATCH_COMPLETED: "Invitation completed",
+  DONATION_COMPLETED: "Donation recorded",
+  PAYMENT_INITIATED: "Payment started",
+  PAYMENT_SUCCEEDED: "Payment succeeded",
+  PAYMENT_FAILED: "Payment failed",
+  PAYMENT_CANCELLED: "Payment cancelled",
+  PAYMENT_REFUNDED: "Payment refunded",
+  WEBHOOK_PROCESSED: "Stripe webhook processed",
+};
+
+export const AUDIT_ACTIONS = Object.keys(AUDIT_ACTION_LABEL);
+
+/** Colour by what the action did, not by which module raised it. */
+export const AUDIT_ACTION_TONE: Record<string, string> = {
+  USER_STATUS_CHANGED: "bg-warning-soft text-warning",
+  USER_SOFT_DELETED: "bg-urgency-critical-soft text-urgency-critical",
+  REQUEST_REJECTED: "bg-urgency-critical-soft text-urgency-critical",
+  REQUEST_CANCELLED: "bg-muted text-muted-foreground",
+  REQUEST_VERIFIED: "bg-success-soft text-success",
+  REQUEST_FULFILLED: "bg-success-soft text-success",
+  MATCH_COMPLETED: "bg-success-soft text-success",
+  DONATION_COMPLETED: "bg-success-soft text-success",
+  PAYMENT_SUCCEEDED: "bg-success-soft text-success",
+  PAYMENT_FAILED: "bg-urgency-critical-soft text-urgency-critical",
+  PAYMENT_REFUNDED: "bg-info-soft text-info",
 };
 
 // ------------------------------------------------------------------ policy
