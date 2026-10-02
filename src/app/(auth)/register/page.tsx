@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { GoogleButton } from "@/components/auth/google-button";
 import { RegisterForm } from "@/components/auth/register-form";
 
 export const metadata: Metadata = {
@@ -19,7 +20,24 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 grid gap-5">
+        {/* Google has to be told which kind of account to open, and only the
+            person signing up knows that — so the choice is made here rather
+            than guessed and corrected later. */}
+        <div className="grid gap-2.5">
+          <p className="text-center text-xs text-muted-foreground">Continue with Google as</p>
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            <GoogleButton role="DONOR" label="A donor" />
+            <GoogleButton role="REQUESTER" label="A requester" />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="h-px flex-1 bg-border" />
+          <span className="text-xs text-muted-foreground">or with your email</span>
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
         <RegisterForm />
       </div>
 

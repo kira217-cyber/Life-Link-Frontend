@@ -124,6 +124,32 @@ export async function demoLoginAction(role: Role): Promise<AuthActionResult> {
 }
 
 /**
+ * Completes a Google sign-in.
+ *
+ * Google never hands the browser a token. The backend issues a single-use
+ * exchange code, redirects here with it in the query string, and this action
+ * trades it for a real token pair on the server — so even though the code is
+ * briefly visible in the address bar and the server log, it is worthless the
+ * moment it has been redeemed once.
+ */
+export async function exchangeGoogleCodeAction(code: string): Promise<AuthActionResult> {
+  if (!code) return { ok: false, message: "No sign-in code came back from Google." };
+
+  try {
+    const result = await apiFetch<AuthPayload>("/auth/exchange-code", {
+      method: "POST",
+      body: { exchangeCode: code },
+      cache: "no-store",
+    });
+    await writeSession(result.user, result.tokens);
+    revalidatePath("/", "layout");
+    return { ok: true, redirectTo: ROLE_HOME[result.user.role] };
+  } catch (error) {
+    return failure(error);
+  }
+}
+
+/**
  * Signs out everywhere rather than only here.
  *
  * `allDevices` bumps the token version upstream, which kills the access token
