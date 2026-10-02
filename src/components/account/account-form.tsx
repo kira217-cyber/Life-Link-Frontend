@@ -7,7 +7,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { InlineLoader } from "@/components/ui/loader";
@@ -15,9 +14,10 @@ import { Label } from "@/components/ui/label";
 import { browserFetch } from "@/lib/api/browser";
 import { errorMessage, fieldErrorsOf } from "@/lib/api/errors";
 import { ROLE_LABEL } from "@/lib/domain";
-import { formatDate, initials } from "@/lib/format";
+import { formatDate } from "@/lib/format";
 import { accountSchema, type AccountValues } from "@/lib/validation/profile";
 import type { MeResponse } from "@/types/api";
+import { UserAvatar } from "@/components/shared/user-avatar";
 
 /**
  * Account settings.
@@ -80,12 +80,7 @@ export function AccountForm({ me }: { me: MeResponse }) {
         className="grid gap-5 rounded-2xl border bg-card p-5 sm:p-6"
       >
         <div className="flex items-center gap-4">
-          <Avatar className="size-14">
-            {me.avatarUrl ? <AvatarImage src={me.avatarUrl} alt="" /> : null}
-            <AvatarFallback className="bg-accent text-base font-semibold text-accent-foreground">
-              {initials(me.name)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar name={me.name} src={me.avatarUrl} size={56} />
           <div className="min-w-0">
             <p className="truncate font-heading text-lg font-semibold">{me.name}</p>
             <p className="truncate text-sm text-muted-foreground">{me.email}</p>

@@ -7,7 +7,6 @@ import { BloodGroupBadge } from "@/components/shared/badges";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ClearFilters, FilterBar, SearchFilter, SelectFilter } from "@/components/shared/filter-bar";
 import { Pager } from "@/components/shared/pager";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,9 +22,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAdminUsers, useSetUserStatus } from "@/hooks/queries/use-admin";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { ROLE_LABEL } from "@/lib/domain";
-import { formatDate, initials } from "@/lib/format";
+import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { AdminUser } from "@/types/api";
+import { UserAvatar } from "@/components/shared/user-avatar";
 
 const ROLE_OPTIONS = (["DONOR", "REQUESTER", "ADMIN"] as const).map((role) => ({
   value: role,
@@ -149,11 +149,7 @@ export function UsersTable() {
                         <tr key={person.id} className="border-b align-middle last:border-0">
                           <td className="px-4 py-3.5">
                             <div className="flex items-center gap-3">
-                              <Avatar className="size-9 shrink-0">
-                                <AvatarFallback className="bg-accent text-xs font-semibold text-accent-foreground">
-                                  {initials(person.name)}
-                                </AvatarFallback>
-                              </Avatar>
+                              <UserAvatar name={person.name} size={36} />
                               <div className="min-w-0">
                                 <p className="truncate font-medium">{person.name}</p>
                                 <p className="truncate text-xs text-muted-foreground">

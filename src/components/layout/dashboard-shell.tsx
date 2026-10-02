@@ -7,7 +7,6 @@ import { useState, useTransition } from "react";
 import { Logo } from "@/components/brand/logo";
 import { DashboardNav } from "@/components/layout/dashboard-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -20,9 +19,9 @@ import {
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { logoutAction } from "@/lib/auth/actions";
 import { ROLE_LABEL } from "@/lib/domain";
-import { initials } from "@/lib/format";
 import { useUiStore } from "@/stores/ui-store";
 import type { SessionUser } from "@/types/api";
+import { UserAvatar } from "@/components/shared/user-avatar";
 
 /**
  * A persistent rail on desktop, a sheet on mobile.
@@ -46,11 +45,7 @@ export function DashboardShell({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto gap-2 px-2 py-1.5">
-          <Avatar className="size-8">
-            <AvatarFallback className="bg-accent text-xs font-semibold text-accent-foreground">
-              {initials(user.name)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar name={user.name} src={user.avatarUrl} size={32} />
           <span className="hidden text-left sm:block">
             <span className="block max-w-[10rem] truncate text-sm font-medium leading-tight">
               {user.name}

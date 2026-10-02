@@ -10,8 +10,9 @@ import { CardListSkeleton } from "@/components/ui/skeletons";
 import { serverFetchPaged } from "@/lib/api/server";
 import { requireRole } from "@/lib/auth/guard";
 import { BLOOD_GROUPS, BLOOD_GROUP_LABEL, DEFAULT_PAGE_SIZE } from "@/lib/domain";
-import { formatDistanceKm, formatRelative, initials, pluralise } from "@/lib/format";
+import { formatDistanceKm, formatRelative, pluralise } from "@/lib/format";
 import type { DonorSearchResult } from "@/types/api";
+import { UserAvatar } from "@/components/shared/user-avatar";
 
 export const metadata: Metadata = {
   title: "Donor directory",
@@ -106,12 +107,7 @@ async function DonorResults({ searchParams }: { searchParams: SearchParams }) {
                 </div>
 
                 <h3 className="mt-2 flex items-center gap-2 truncate font-heading text-base font-semibold">
-                  <span
-                    aria-hidden="true"
-                    className="grid size-7 shrink-0 place-items-center rounded-full bg-accent text-[0.7rem] font-semibold text-accent-foreground"
-                  >
-                    {initials(donor.name)}
-                  </span>
+                  <UserAvatar name={donor.name} src={donor.avatarUrl} size={28} />
                   {donor.name}
                 </h3>
 
