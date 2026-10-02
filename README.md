@@ -8,7 +8,7 @@ Built for **Programming Hero Apollo Level 2 — Batch 7, Assignment 7**.
 
 |                   |                                                            |
 | ----------------- | ---------------------------------------------------------- |
-| **Live frontend** | _added after deployment_                                   |
+| **Live frontend** | https://life-link-smoky.vercel.app                         |
 | **Live API**      | https://life-link-api.vercel.app                           |
 | **Backend repo**  | https://github.com/kira217-cyber/Life-Link-Backend         |
 | **API docs**      | https://documenter.getpostman.com/view/57916709/2sBYAvupu5 |
@@ -186,12 +186,15 @@ The frontend is a standard Next.js deployment and needs no build configuration. 
 its own environment rather than trusting the client:
 
 ```
+CLIENT_SUCCESS_URL = https://<frontend>/auth/success
+CLIENT_FAILURE_URL = https://<frontend>/auth/failure
 STRIPE_SUCCESS_URL = https://<frontend>/payment/success?session_id={CHECKOUT_SESSION_ID}
 STRIPE_CANCEL_URL  = https://<frontend>/payment/cancel
 CORS_ORIGINS       = https://<frontend>
 ```
 
-Miss those and checkout will complete but return the donor to the wrong place.
+Miss the Stripe pair and checkout completes but returns the donor to the wrong place. Miss the
+client pair and a Google sign-in ends on a 404 instead of a session.
 
 ---
 
