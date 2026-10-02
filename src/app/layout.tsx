@@ -5,6 +5,7 @@ import { Providers } from "@/components/providers";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { Toaster } from "@/components/ui/sonner";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -32,16 +33,13 @@ const mono = Geist_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "LifeLink — Blood Donation & Emergency Assistance",
-    template: "%s · LifeLink",
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "LifeLink connects verified blood requests with compatible, eligible donors nearby — and keeps an emergency assistance fund running behind them.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "blood donation",
     "blood bank",
@@ -51,15 +49,15 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    siteName: "LifeLink",
-    title: "LifeLink — Blood Donation & Emergency Assistance",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description:
       "Post a verified blood request and reach the donors who can actually answer it: compatible group, eligible to donate, close enough to come.",
-    url: siteUrl,
+    url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
-    title: "LifeLink — Blood Donation & Emergency Assistance",
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
     description:
       "Post a verified blood request and reach the donors who can actually answer it.",
   },
