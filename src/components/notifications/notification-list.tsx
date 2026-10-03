@@ -92,7 +92,7 @@ export function NotificationList() {
     );
   }
 
-  const items = data?.items ?? [];
+  const items = data?.data.notifications ?? [];
 
   return (
     <div className="grid gap-5">

@@ -5,18 +5,20 @@ import { toast } from "sonner";
 
 import { queryKeys } from "./keys";
 
-import { browserFetch, browserFetchPaged } from "@/lib/api/browser";
+import { browserFetch, browserFetchWithMeta } from "@/lib/api/browser";
 import { errorMessage } from "@/lib/api/errors";
 import { DEFAULT_PAGE_SIZE } from "@/lib/domain";
-import type { AppNotification } from "@/types/api";
+import type { AppNotification, NotificationsPayload } from "@/types/api";
 
 export function useNotifications(filters: { page?: number; unreadOnly?: boolean } = {}) {
   const { page = 1, unreadOnly = false } = filters;
 
   return useQuery({
     queryKey: queryKeys.notifications.list({ page, unreadOnly }),
+    // The endpoint wraps its rows to carry unreadCount, so this reads the
+    // envelope rather than assuming data is a bare array.
     queryFn: () =>
-      browserFetchPaged<AppNotification>("/notifications", {
+      browserFetchWithMeta<NotificationsPayload>("/notifications", {
         query: { page, limit: DEFAULT_PAGE_SIZE, unreadOnly: unreadOnly ? "true" : "false" },
       }),
   });
@@ -39,15 +41,19 @@ export function useMarkRead() {
       await queryClient.cancelQueries({ queryKey: queryKeys.notifications.all });
       const previous = queryClient.getQueriesData({ queryKey: queryKeys.notifications.all });
 
-      queryClient.setQueriesData<{ items: AppNotification[] } | undefined>(
+      queryClient.setQueriesData<{ data: NotificationsPayload } | undefined>(
         { queryKey: queryKeys.notifications.all },
         (old) =>
           old
             ? {
                 ...old,
-                items: old.items.map((item) =>
-                  item.id === id ? { ...item, readAt: new Date().toISOString() } : item,
-                ),
+                data: {
+                  ...old.data,
+                  notifications: old.data.notifications.map((item) =>
+                    item.id === id ? { ...item, readAt: new Date().toISOString() } : item,
+                  ),
+                  unreadCount: Math.max(0, old.data.unreadCount - 1),
+                },
               }
             : old,
       );

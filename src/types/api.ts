@@ -364,3 +364,18 @@ export interface AdminPaymentsPayload {
   payments: Payment[];
   totals: { paidCount: number; paidAmount: number };
 }
+
+/**
+ * `/notifications` and `/payments/mine` wrap their rows so they can carry a
+ * figure alongside, exactly as `/admin/payments` does. They are listed here so
+ * a caller reaches for the envelope helper rather than the bare-array one.
+ */
+export interface NotificationsPayload {
+  notifications: AppNotification[];
+  unreadCount: number;
+}
+
+export interface MyPaymentsPayload {
+  payments: Payment[];
+  totals: { paidCount: number; paidAmount: number };
+}

@@ -7,10 +7,10 @@ import { DonateForm } from "@/components/payments/donate-form";
 import { PaymentStatusBadge } from "@/components/shared/badges";
 import { EmptyState } from "@/components/shared/empty-state";
 import { FormSkeleton } from "@/components/ui/skeletons";
-import { serverFetchPaged } from "@/lib/api/server";
+import { serverFetch } from "@/lib/api/server";
 import { requireUser } from "@/lib/auth/guard";
 import { formatMoney, formatRelative } from "@/lib/format";
-import type { Payment } from "@/types/api";
+import type { MyPaymentsPayload } from "@/types/api";
 
 export const metadata: Metadata = {
   title: "Support the fund",
@@ -20,7 +20,9 @@ export const metadata: Metadata = {
 
 /** The contributor's own history, so a repeat donor can see what they gave. */
 async function MyPayments() {
-  const { items } = await serverFetchPaged<Payment>("/payments/mine", {
+  // This endpoint wraps its rows to carry the paid totals, so it is read as
+  // an envelope — treating it as a bare array is what made this page throw.
+  const { payments: items } = await serverFetch<MyPaymentsPayload>("/payments/mine", {
     query: { page: 1, limit: 5 },
   });
 
