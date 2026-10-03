@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { SpotGuesswork } from "@/components/illustrations/spot";
 import { RequestCard } from "@/components/requests/request-card";
+import { RequestDonors } from "@/components/requests/request-donors";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ClearFilters, FilterBar, SearchFilter, SelectFilter } from "@/components/shared/filter-bar";
 import { Pager } from "@/components/shared/pager";
@@ -126,6 +127,13 @@ export function MyRequestList() {
                   <RequestCard
                     key={request.id}
                     request={request}
+                    footer={
+                      // Only once donors could exist; a PENDING request has
+                      // nobody invited and nothing to show.
+                      request.status === "MATCHING" || request.status === "FULFILLED" ? (
+                        <RequestDonors request={request} />
+                      ) : null
+                    }
                     action={
                       <div className="flex flex-wrap gap-2">
                         {canCancel ? (

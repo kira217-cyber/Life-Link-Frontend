@@ -146,3 +146,33 @@ export function useCancelRequest() {
     onError: (error) => toast.error(errorMessage(error)),
   });
 }
+
+/**
+ * Records a donation that actually happened.
+ *
+ * The last step of the whole workflow, and deliberately not the donor's to
+ * take: a donor confirming their own donation would leave nobody to check it.
+ * The requester saw the person at the hospital, so the requester confirms.
+ */
+export function useCompleteMatch() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ matchId, units, notes }: { matchId: string; units: number; notes?: string }) =>
+      browserFetch<unknown>(`/matches/${matchId}/complete`, {
+        method: "POST",
+        body: { units, ...(notes ? { notes } : {}) },
+      }),
+
+    onSuccess: async () => {
+      toast.success("Donation recorded. The request moves on once every unit is in.");
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.requests.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.matches.all }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.donations.all }),
+      ]);
+    },
+
+    onError: (error) => toast.error(errorMessage(error)),
+  });
+}

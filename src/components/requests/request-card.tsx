@@ -18,11 +18,14 @@ export function RequestCard({
   request,
   href,
   action,
+  footer,
   className,
 }: {
   request: BloodRequest;
   href?: string;
   action?: React.ReactNode;
+  /** Sits under the action row — for a panel that belongs to this request. */
+  footer?: React.ReactNode;
   className?: string;
 }) {
   const remaining = Math.max(0, request.unitsNeeded - request.unitsFulfilled);
@@ -75,6 +78,8 @@ export function RequestCard({
         </p>
         {action}
       </div>
+
+      {footer}
     </>
   );
 
