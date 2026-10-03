@@ -3,6 +3,7 @@ import {
   Bell,
   ClipboardList,
   Droplets,
+  HandCoins,
   FileClock,
   HeartHandshake,
   LayoutDashboard,
@@ -49,6 +50,7 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
       title: "Account",
       items: [
         { href: "/donor/profile", label: "Donor profile", icon: BadgeCheck },
+        { href: "/donate", label: "Support the fund", icon: HandCoins },
         { href: "/notifications", label: "Notifications", icon: Bell },
         { href: "/profile", label: "Settings", icon: Settings },
       ],
@@ -66,6 +68,7 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
     {
       title: "Account",
       items: [
+        { href: "/donate", label: "Support the fund", icon: HandCoins },
         { href: "/notifications", label: "Notifications", icon: Bell },
         { href: "/profile", label: "Settings", icon: Settings },
       ],
@@ -90,6 +93,7 @@ export const NAV_BY_ROLE: Record<Role, NavSection[]> = {
       items: [
         { href: "/admin/payments", label: "Payments", icon: Receipt },
         { href: "/admin/audit-logs", label: "Audit log", icon: FileClock },
+        { href: "/donate", label: "Support the fund", icon: HandCoins },
         { href: "/notifications", label: "Notifications", icon: Bell },
         { href: "/profile", label: "Settings", icon: Settings },
       ],
